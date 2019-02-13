@@ -59,9 +59,19 @@ public class KnightBoard {
     if (startingRow <= 0 || startingCol <= 0) {
       throw new IllegalArgumentException();
     }
-
+    return solveH(startingRow, startingCol, 1);
   }
-  
+
+  public boolean solveH(int row, int col, int level) {
+    if (level == rows*cols) {
+      return true;
+    }
+    else {
+      return solveH(r+2, c+1, level+1) ||
+      
+    }
+  }
+
 /*
   public int countSolutions(int startingRow, int startingCol){
     if (isException()) {
