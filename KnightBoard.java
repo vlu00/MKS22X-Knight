@@ -8,6 +8,7 @@ public class KnightBoard {
       throw new IllegalArgumentException();
     }
     else {
+      board = new int[startingRows][startingCols];
       for (int r = 0; r < startingRows; r++) {
         for (int c = 0; c < startingCols; c++) {
           board[r][c] = 0;
@@ -44,6 +45,7 @@ public class KnightBoard {
 
   public static void main(String[] args) {
     KnightBoard A = new KnightBoard(3, 3);
+    System.out.println(A.toString()); 
   }
 
 }
