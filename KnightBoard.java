@@ -62,12 +62,21 @@ public class KnightBoard {
     return solveH(startingRow, startingCol, 1);
   }
 
-  public boolean isOnBoard(int row, int col, int horizontal, int vertical) {
+  public boolean isOnBoard(int row, int col, int vertical, int horizontal) {
     if (row + vertical < 0 || row + vertical > rows ||
         col + horizontal < 0 || col + horizontal > cols) {
       return false;
     }
     return true;
+  }
+
+  public boolean addKnight(int row, int col, int vertical, int horizontal, int level) {
+    if (isOnBoard(row, col, vertical, horizontal) &&
+        board[row + vertical][col + horizontal] == 0) {
+          board[row + vertical][col + horizontal] = level;
+          return true;
+    }
+    return false;
   }
 
   //check if next move is on board and if there is no KnightBoard
@@ -77,12 +86,55 @@ public class KnightBoard {
       return true;
     }
     else {
-      if (board[row][col] == 0) {
-
+      if (addKnight(row, col, -2, -1)) {
+        if (solveH()) {
+          return true
+        }
+        if (isOnBoard(row, col, -2, -1)) {
+          if (solveH(row-2, col-1, level+1)) {
+            return true;
+          }
+        }
+        if (isOnBoard(row, col, -2, 1)) {
+          if (solveH(row-2, col+1, level+1)) {
+            return true;
+          }
+        }
+        if (isOnBoard(row, col, -1, -2)) {
+          if (solveH(row-1, col-2, level+1)) {
+            return true;
+          }
+        }
+        if (isOnBoard(row, col, -1, 2)) {
+          if (solveH(row-1, col+2, level+1)) {
+            return true;
+          }
+        }
+        if (isOnBoard(row, col, 1, -2)) {
+          if (solveH(row+1, col-2, level+1)) {
+            return true;
+          }
+        }
+        if (isOnBoard(row, col, 1, 2)) {
+          if (solveH(row+1, col+2, level+1)) {
+            return true;
+          }
+        }
+        if (isOnBoard(row, col, 2, -1)) {
+          if (solveH(row+2, col-1, level+1)) {
+            return true;
+          }
+        }
+        if (isOnBoard(row, col, 2, 1)) {
+          if (solveH(row+2, col+1, level+1)) {
+            return true;
+          }
+        }
+        else {
+          board[row][col] = 0;
+        }
       }
-      else {
-        return false;
-      }
+      return false;
     }
   }
 
