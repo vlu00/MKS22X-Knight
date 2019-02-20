@@ -64,8 +64,9 @@ public class KnightBoard {
   }
 
   public boolean isOnBoard(int row, int col, int vertical, int horizontal) {
-    if (row + vertical < 0 || row + vertical > rows ||
-        col + horizontal < 0 || col + horizontal > cols) {
+    if (row + vertical < 0 || row + vertical > rows-1 ||
+        col + horizontal < 0 || col + horizontal > cols-1 ||
+        board[row+vertical][col+horizontal] != 0) {
       return false;
     }
     return true;
@@ -166,9 +167,6 @@ public class KnightBoard {
         else {
           board[row+2][col+1] = 0;
         }
-      }
-      else {
-        board[row][col] = 0;
       }
     }
     return false;
