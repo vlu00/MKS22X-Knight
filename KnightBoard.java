@@ -85,6 +85,7 @@ public class KnightBoard {
   //if good continue otherwise remove and return false
   public boolean solveH(int row, int col, int level) {
     if (level == rows*cols) {
+      System.out.println(level); 
       board[row][col] = level;
       return true;
     }
