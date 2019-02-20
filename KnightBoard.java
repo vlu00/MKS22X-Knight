@@ -56,11 +56,12 @@ public class KnightBoard {
     if (isException()) {
       throw new IllegalStateException();
     }
-    if (startingRow < 0 || startingRow > rows ||
-        startingCol < 0 || startingCol > cols) {
+    if (startingRow < 0 || startingRow > rows-1||
+        startingCol < 0 || startingCol > cols-1) {
       throw new IllegalArgumentException();
     }
-    return solveH(startingRow, startingCol, 1);
+    board[startingRow][startingCol] = 1;
+    return solveH(startingRow, startingCol, 2);
   }
 
   public boolean isOnBoard(int row, int col, int vertical, int horizontal) {
@@ -84,9 +85,7 @@ public class KnightBoard {
   //check if next move is on board and if there is no KnightBoard
   //if good continue otherwise remove and return false
   public boolean solveH(int row, int col, int level) {
-    if (level == rows*cols) {
-      System.out.println(level); 
-      board[row][col] = level;
+    if (level > rows*cols) {
       return true;
     }
     else {
@@ -168,6 +167,9 @@ public class KnightBoard {
         else {
           board[row+2][col+1] = 0;
         }
+      }
+      else {
+        board[row][col] = 0;
       }
     }
     return false;
