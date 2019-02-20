@@ -161,22 +161,99 @@ public class KnightBoard {
     return false;
   }
 
-/*
   public int countSolutions(int startingRow, int startingCol){
     if (isException()) {
       throw new IllegalStateException();
     }
-    if (startingRows <= 0 || startingCols <= 0) {
+    if (startingRow < 0 || startingCol < 0) {
       throw new IllegalArgumentException();
     }
-
+    int m;
+    int n;
+    if (rows <= cols) {
+      m = rows;
+      n = cols;
+    }
+    else {
+      m = cols;
+      n = rows;
+    }
+    int counter = 0;
+    if ((m % 2 == 1 && n % 2 == 1) ||
+        (m == 3 && n == 4 || n == 6 || n ==8) ||
+        (m == 1 || m == 2 || m == 4)) {
+      board[startingRow][startingCol] = 1;
+      countHelper(startingRow, startingCol, 2);
+    }
+    return counter;
   }
-*/
+
+  public int countHelper(int row, int col, int level) {
+    int solutions = 0;
+    if (level > rows*cols) {
+      return 1;
+    }
+    else {
+      if (isOnBoard(row, col, -2, -1)) {
+        board[row-2][col-1] = level;
+        solutions += countHelper(row-2, col-1, level+1);
+        board[row-2][col-1] = 0;
+      }
+
+      if (isOnBoard(row, col, -2, 1)) {
+        board[row-2][col+1] = level;
+        solutions += countHelper(row-2, col+1, level+1);
+        board[row-2][col+1] = 0;
+      }
+
+      if (isOnBoard(row, col, -1, -2)) {
+        board[row-1][col-2] = level;
+        solutions += countHelper(row-1, col-2, level+1);
+        board[row-1][col-2] = 0;
+
+      }
+
+      if (isOnBoard(row, col, -1, 2)) {
+        board[row-1][col+2] = level;
+        solutions += countHelper(row-1, col+2, level+1);
+        board[row-1][col+2] = 0;
+      }
+
+      if (isOnBoard(row, col, 1, -2)) {
+        board[row+1][col-2] = level;
+        solutions += countHelper(row+1, col-2, level+1);
+        board[row+1][col-2] = 0;
+      }
+
+      if (isOnBoard(row, col, 1, 2)) {
+        board[row+1][col+2] = level;
+        solutions += countHelper(row+1, col+2, level+1);
+        board[row+1][col+2] = 0;
+      }
+
+      if (isOnBoard(row, col, 2, -1)) {
+        board[row+2][col-1] = level;
+        solutions += countHelper(row+2, col-1, level+1);
+        board[row+2][col-1] = 0;
+      }
+
+      if (isOnBoard(row, col, 2, 1)) {
+        board[row+2][col+1] = level;
+        solutions += countHelper(row+2, col+1, level+1);
+        board[row+2][col+1] = 0;
+      }
+    }
+    return solutions;
+  }
+
   public static void main(String[] args) {
     KnightBoard A = new KnightBoard(5, 5);
     System.out.println(A.toString());
     System.out.println(A.solve(0,0));
     System.out.println(A.toString());
+
+    KnightBoard B = new KnightBoard(5, 5);
+    System.out.println(B.countSolutions(0,0));
   }
 
 }
