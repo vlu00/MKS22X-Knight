@@ -72,18 +72,7 @@ public class KnightBoard {
     }
     return true;
   }
-/*
-  public boolean addKnight(int row, int col, int vertical, int horizontal, int level) {
-    if (isOnBoard(row, col, vertical, horizontal) &&
-        board[row + vertical][col + horizontal] == 0) {
-          board[row + vertical][col + horizontal] = level;
-          return true;
-    }
-    return false;
-  }
-*/
-  //check if next move is on board and if there is no KnightBoard
-  //if good continue otherwise remove and return false
+
   public boolean solveH(int row, int col, int level) {
     if (level > rows*cols) {
       return true;
@@ -167,9 +156,6 @@ public class KnightBoard {
         else {
           board[row+2][col+1] = 0;
         }
-      }
-      else {
-        board[row][col] = 0;
       }
     }
     return false;
