@@ -180,10 +180,10 @@ public class KnightBoard {
     }
     int counter = 0;
     if ((m % 2 == 1 && n % 2 == 1) ||
-        (m == 3 && n == 4 || n == 6 || n ==8) ||
+        (m == 3 && (n == 4 || n == 6 || n ==8)) ||
         (m == 1 || m == 2 || m == 4)) {
       board[startingRow][startingCol] = 1;
-      countHelper(startingRow, startingCol, 2);
+      counter = countHelper(startingRow, startingCol, 2);
     }
     return counter;
   }
@@ -254,6 +254,8 @@ public class KnightBoard {
 
     KnightBoard B = new KnightBoard(5, 5);
     System.out.println(B.countSolutions(0,0));
+    System.out.println(B.toString());
+
   }
 
 }
