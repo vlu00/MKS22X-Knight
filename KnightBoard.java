@@ -185,6 +185,7 @@ public class KnightBoard {
       board[startingRow][startingCol] = 1;
       counter = countHelper(startingRow, startingCol, 2);
     }
+    board[startingRow][startingCol] = 0;
     return counter;
   }
 
