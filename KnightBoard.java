@@ -29,7 +29,7 @@ public class KnightBoard {
     setUpMoves();
   }
 
-/*
+
   public String toString() {
     String display = "";
     for (int r = 0; r < rows; r++) {
@@ -40,7 +40,7 @@ public class KnightBoard {
     }
     return display;
   }
-*/
+/*
   public String toString() {
     String display = "";
     for (int r = 0; r < rows; r++) {
@@ -64,7 +64,7 @@ public class KnightBoard {
     }
     return display;
   }
-
+*/
   public boolean isException() {
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
@@ -121,13 +121,33 @@ public class KnightBoard {
     }
     else {
       orderMoves(row, col);
+
+      System.out.println();
+      System.out.print("Moves: ");
+      for (int i = 0; i < orderedMoves.size(); i++) {
+        System.out.print(orderedMoves.get(i) + " ");
+      }
+      System.out.println();
+      System.out.print("xVals: ");
       for (int i = 0; i < xnew.size(); i++) {
-        board[row+x[i]][col+y[i]] = level;
-        if (solveH(row+x[i], col+y[i], level+1)) {
+        System.out.print(xnew.get(i) + " ");
+      }
+      System.out.println();
+      System.out.print("Yvals: ");
+      for (int i = 0; i < ynew.size(); i++) {
+        System.out.print(ynew.get(i)+ " ");
+      }
+      System.out.println();
+
+      for (int i = 0; i < xnew.size(); i++) {
+        System.out.println(row+xnew.get(i));
+        System.out.println(col+ynew.get(i));
+        board[row+xnew.get(i)][col+ynew.get(i)] = level;
+        if (solveH(row+xnew.get(i), col+ynew.get(i), level+1)) {
           return true;
         }
         else {
-          board[row+x[i]][col+y[i]] = 0;
+          board[row+xnew.get(i)][col+ynew.get(i)] = 0;
         }
       }
     }
@@ -136,6 +156,9 @@ public class KnightBoard {
 
   private void orderMoves(int row, int col) {
     boolean first = true;
+    orderedMoves.clear(); 
+    xnew.clear();
+    ynew.clear();
     for (int i = 0; i < x.length; i++) {
       if (isOnBoard(row, col, x[i], y[i]) && moves[row+x[i]][col+y[i]] != 0) {
         if (first) {
@@ -246,7 +269,7 @@ public class KnightBoard {
     KnightBoard A = new KnightBoard(3, 5);
     System.out.println(A.toString());
     System.out.println(A.solve(0,0));
-    System.out.println(A.toString());
+    //System.out.println(A.toString());
   }
 
 }
