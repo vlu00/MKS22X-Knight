@@ -8,9 +8,9 @@ public class KnightBoard {
   private int[] x = new int [] {-2, -2, -1, -1, 1, 1, 2, 2};
   private int[] y = new int [] {-1, 1, 2, -2, 2, -2, -1, 1};
 
-  private ArrayList<Integer> orderedMoves = new ArrayList<Integer>();
-  private ArrayList<Integer> xnew = new ArrayList<Integer>();
-  private ArrayList<Integer> ynew = new ArrayList<Integer>();
+  //private ArrayList<Integer> orderedMoves = new ArrayList<Integer>();
+  //private ArrayList<Integer> xnew = new ArrayList<Integer>();
+  //private ArrayList<Integer> ynew = new ArrayList<Integer>();
 
 
   public KnightBoard(int startingRows, int startingCols) {
@@ -29,7 +29,7 @@ public class KnightBoard {
     setUpMoves();
   }
 
-
+/*
   public String toString() {
     String display = "";
     for (int r = 0; r < rows; r++) {
@@ -40,7 +40,7 @@ public class KnightBoard {
     }
     return display;
   }
-/*
+*/
   public String toString() {
     String display = "";
     for (int r = 0; r < rows; r++) {
@@ -64,7 +64,7 @@ public class KnightBoard {
     }
     return display;
   }
-*/
+
   public boolean isException() {
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
@@ -120,13 +120,15 @@ public class KnightBoard {
       return true;
     }
     else {
-      orderMoves(row, col);
+      ArrayList<Integer> xnew = newX(row, col);
+      ArrayList<Integer> ynew = newY(row, col);
 
-      System.out.println();
+      /*System.out.println();
       System.out.print("Moves: ");
       for (int i = 0; i < orderedMoves.size(); i++) {
         System.out.print(orderedMoves.get(i) + " ");
       }
+      */
       System.out.println();
       System.out.print("xVals: ");
       for (int i = 0; i < xnew.size(); i++) {
@@ -154,11 +156,57 @@ public class KnightBoard {
     return false;
   }
 
+  private ArrayList<Integer> newX (int row, int col) {
+    ArrayList<Integer> orderedMoves = new ArrayList<Integer>();
+    ArrayList<Integer> newXVal = new ArrayList<Integer>();
+    boolean first = true;
+    for (int i = 0; i < x.length; i++) {
+      if (isOnBoard(row, col, x[i], y[i]) && moves[row+x[i]][col+y[i]] != 0) {
+        if (first) {
+          orderedMoves.add(moves[row+x[i]][col+y[i]]);
+          newXVal.add(x[i]);
+          first = false;
+        }
+        else {
+          int index = 0;
+          while (moves[row+x[i]][col+y[i]] > orderedMoves.get(index)) {
+            index++;
+          }
+          orderedMoves.add(index, moves[row+x[i]][col+y[i]]);
+          newXVal.add(index, x[i]);
+        }
+      }
+    }
+    return newXVal;
+  }
+
+  private ArrayList<Integer> newY (int row, int col) {
+    ArrayList<Integer> orderedMoves = new ArrayList<Integer>();
+    ArrayList<Integer> newYVal = new ArrayList<Integer>();
+    boolean first = true;
+    for (int i = 0; i < y.length; i++) {
+      if (isOnBoard(row, col, x[i], y[i]) && moves[row+x[i]][col+y[i]] != 0) {
+        if (first) {
+          orderedMoves.add(moves[row+x[i]][col+y[i]]);
+          newYVal.add(x[i]);
+          first = false;
+        }
+        else {
+          int index = 0;
+          while (moves[row+x[i]][col+y[i]] > orderedMoves.get(index)) {
+            index++;
+          }
+          orderedMoves.add(index, moves[row+x[i]][col+y[i]]);
+          newYVal.add(index, x[i]);
+        }
+      }
+    }
+    return newYVal;
+  }
+
+  /*
   private void orderMoves(int row, int col) {
     boolean first = true;
-    orderedMoves.clear(); 
-    xnew.clear();
-    ynew.clear();
     for (int i = 0; i < x.length; i++) {
       if (isOnBoard(row, col, x[i], y[i]) && moves[row+x[i]][col+y[i]] != 0) {
         if (first) {
@@ -179,7 +227,7 @@ public class KnightBoard {
       }
     }
   }
-
+*/
   public int countSolutions(int startingRow, int startingCol){
     if (isException()) {
       throw new IllegalStateException();
@@ -269,7 +317,7 @@ public class KnightBoard {
     KnightBoard A = new KnightBoard(3, 5);
     System.out.println(A.toString());
     System.out.println(A.solve(0,0));
-    //System.out.println(A.toString());
+    System.out.println(A.toString());
   }
 
 }
