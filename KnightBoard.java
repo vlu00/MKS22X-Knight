@@ -8,11 +8,6 @@ public class KnightBoard {
   private int[] x = new int [] {-2, -2, -1, -1, 1, 1, 2, 2};
   private int[] y = new int [] {-1, 1, 2, -2, 2, -2, -1, 1};
 
-  //private ArrayList<Integer> orderedMoves = new ArrayList<Integer>();
-  //private ArrayList<Integer> xnew = new ArrayList<Integer>();
-  //private ArrayList<Integer> ynew = new ArrayList<Integer>();
-
-
   public KnightBoard(int startingRows, int startingCols) {
     if (startingRows <= 0 || startingCols <= 0) {
       throw new IllegalArgumentException();
@@ -27,6 +22,24 @@ public class KnightBoard {
     }
     moves = new int[rows][cols];
     setUpMoves();
+  }
+
+  private void setUpMoves() {
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < cols; c++) {
+        moves[r][c] = countMoves(r, c);
+      }
+    }
+  }
+
+  private int countMoves(int row, int col) {
+    int counter = 0;
+    for (int i = 0; i < x.length; i++) {
+      if (isOnBoard(row, col, x[i], y[i])) {
+        counter++;
+      }
+    }
+    return counter;
   }
 
 /*
@@ -76,24 +89,6 @@ public class KnightBoard {
     return false;
   }
 
-  private void setUpMoves() {
-    for (int r = 0; r < rows; r++) {
-      for (int c = 0; c < cols; c++) {
-        moves[r][c] = countMoves(r, c);
-      }
-    }
-  }
-
-  private int countMoves(int row, int col) {
-    int counter = 0;
-    for (int i = 0; i < x.length; i++) {
-      if (isOnBoard(row, col, x[i], y[i])) {
-        counter++;
-      }
-    }
-    return counter;
-  }
-
   public boolean isOnBoard(int row, int col, int vertical, int horizontal) {
     if (row + vertical < 0 || row + vertical > rows-1 ||
         col + horizontal < 0 || col + horizontal > cols-1 ||
@@ -123,27 +118,7 @@ public class KnightBoard {
       ArrayList<Integer> xnew = newX(row, col);
       ArrayList<Integer> ynew = newY(row, col);
 
-      /*System.out.println();
-      System.out.print("Moves: ");
-      for (int i = 0; i < orderedMoves.size(); i++) {
-        System.out.print(orderedMoves.get(i) + " ");
-      }
-      */
-      System.out.println();
-      System.out.print("xVals: ");
       for (int i = 0; i < xnew.size(); i++) {
-        System.out.print(xnew.get(i) + " ");
-      }
-      System.out.println();
-      System.out.print("Yvals: ");
-      for (int i = 0; i < ynew.size(); i++) {
-        System.out.print(ynew.get(i)+ " ");
-      }
-      System.out.println();
-
-      for (int i = 0; i < xnew.size(); i++) {
-        System.out.println(row+xnew.get(i));
-        System.out.println(col+ynew.get(i));
         board[row+xnew.get(i)][col+ynew.get(i)] = level;
         if (solveH(row+xnew.get(i), col+ynew.get(i), level+1)) {
           return true;
@@ -206,30 +181,6 @@ public class KnightBoard {
     return newYVal;
   }
 
-  /*
-  private void orderMoves(int row, int col) {
-    boolean first = true;
-    for (int i = 0; i < x.length; i++) {
-      if (isOnBoard(row, col, x[i], y[i]) && moves[row+x[i]][col+y[i]] != 0) {
-        if (first) {
-          orderedMoves.add(moves[row+x[i]][col+y[i]]);
-          xnew.add(x[i]);
-          ynew.add(y[i]);
-          first = false;
-        }
-        else {
-          int index = 0;
-          while (moves[row+x[i]][col+y[i]] > orderedMoves.get(index)) {
-            index++;
-          }
-          orderedMoves.add(index, moves[row+x[i]][col+y[i]]);
-          xnew.add(index, x[i]);
-          ynew.add(index, y[i]);
-        }
-      }
-    }
-  }
-*/
   public int countSolutions(int startingRow, int startingCol){
     if (isException()) {
       throw new IllegalStateException();
@@ -316,7 +267,7 @@ public class KnightBoard {
   }
 
   public static void main(String[] args) {
-    KnightBoard A = new KnightBoard(3, 5);
+    KnightBoard A = new KnightBoard(5, 5);
     System.out.println(A.toString());
     System.out.println(A.solve(0,0));
     System.out.println(A.toString());
