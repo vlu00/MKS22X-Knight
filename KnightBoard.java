@@ -1,8 +1,17 @@
+import java.util.ArrayList;
+
 public class KnightBoard {
   private int[][] board;
   private int[][] moves;
   private int rows;
   private int cols;
+  private int[] x = new int [] {-2, -2, -1, -1, 1, 1, 2, 2};
+  private int[] y = new int [] {-1, 1, 2, -2, 2, -2, -1, 1};
+
+  private ArrayList<Integer> orderedMoves = new ArrayList<Integer>();
+  private ArrayList<Integer> xnew = new ArrayList<Integer>();
+  private ArrayList<Integer> ynew = new ArrayList<Integer>();
+
 
   public KnightBoard(int startingRows, int startingCols) {
     if (startingRows <= 0 || startingCols <= 0) {
@@ -20,6 +29,7 @@ public class KnightBoard {
     setUpMoves();
   }
 
+/*
   public String toString() {
     String display = "";
     for (int r = 0; r < rows; r++) {
@@ -30,7 +40,7 @@ public class KnightBoard {
     }
     return display;
   }
-/*
+*/
   public String toString() {
     String display = "";
     for (int r = 0; r < rows; r++) {
@@ -54,7 +64,7 @@ public class KnightBoard {
     }
     return display;
   }
-*/
+
   public boolean isException() {
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
@@ -75,8 +85,6 @@ public class KnightBoard {
   }
 
   private int countMoves(int row, int col) {
-    int[] x = new int [] {-2, -2, -1, -1, 1, 1, 2, 2};
-    int[] y = new int [] {-1, 1, 2, -2, 2, -2, -1, 1};
     int counter = 0;
     for (int i = 0; i < x.length; i++) {
       if (isOnBoard(row, col, x[i], y[i])) {
@@ -84,6 +92,15 @@ public class KnightBoard {
       }
     }
     return counter;
+  }
+
+  public boolean isOnBoard(int row, int col, int vertical, int horizontal) {
+    if (row + vertical < 0 || row + vertical > rows-1 ||
+        col + horizontal < 0 || col + horizontal > cols-1 ||
+        board[row+vertical][col+horizontal] != 0) {
+      return false;
+    }
+    return true;
   }
 
   public boolean solve(int startingRow, int startingCol){
@@ -98,101 +115,46 @@ public class KnightBoard {
     return solveH(startingRow, startingCol, 2);
   }
 
-  public boolean isOnBoard(int row, int col, int vertical, int horizontal) {
-    if (row + vertical < 0 || row + vertical > rows-1 ||
-        col + horizontal < 0 || col + horizontal > cols-1 ||
-        board[row+vertical][col+horizontal] != 0) {
-      return false;
-    }
-    return true;
-  }
-
   public boolean solveH(int row, int col, int level) {
     if (level > rows*cols) {
       return true;
     }
     else {
-      if (isOnBoard(row, col, -2, -1)) {
-        board[row-2][col-1] = level;
-        if (solveH(row-2, col-1, level+1)) {
+      orderMoves(row, col);
+      for (int i = 0; i < xnew.size(); i++) {
+        board[row+x[i]][col+y[i]] = level;
+        if (solveH(row+x[i], col+y[i], level+1)) {
           return true;
         }
         else {
-          board[row-2][col-1] = 0;
-        }
-      }
-
-      if (isOnBoard(row, col, -2, 1)) {
-        board[row-2][col+1] = level;
-        if (solveH(row-2, col+1, level+1)) {
-          return true;
-        }
-        else {
-          board[row-2][col+1] = 0;
-        }
-      }
-
-      if (isOnBoard(row, col, -1, -2)) {
-        board[row-1][col-2] = level;
-        if (solveH(row-1, col-2, level+1)) {
-          return true;
-        }
-        else {
-          board[row-1][col-2] = 0;
-        }
-      }
-
-      if (isOnBoard(row, col, -1, 2)) {
-        board[row-1][col+2] = level;
-        if (solveH(row-1, col+2, level+1)) {
-          return true;
-        }
-        else {
-          board[row-1][col+2] = 0;
-        }
-      }
-
-      if (isOnBoard(row, col, 1, -2)) {
-        board[row+1][col-2] = level;
-        if (solveH(row+1, col-2, level+1)) {
-          return true;
-        }
-        else {
-          board[row+1][col-2] = 0;
-        }
-      }
-
-      if (isOnBoard(row, col, 1, 2)) {
-        board[row+1][col+2] = level;
-        if (solveH(row+1, col+2, level+1)) {
-          return true;
-        }
-        else {
-          board[row+1][col+2] = 0;
-        }
-      }
-
-      if (isOnBoard(row, col, 2, -1)) {
-        board[row+2][col-1] = level;
-        if (solveH(row+2, col-1, level+1)) {
-          return true;
-        }
-        else {
-          board[row+2][col-1] = 0;
-        }
-      }
-
-      if (isOnBoard(row, col, 2, 1)) {
-        board[row+2][col+1] = level;
-        if (solveH(row+2, col+1, level+1)) {
-          return true;
-        }
-        else {
-          board[row+2][col+1] = 0;
+          board[row+x[i]][col+y[i]] = 0;
         }
       }
     }
     return false;
+  }
+
+  private void orderMoves(int row, int col) {
+    boolean first = true;
+    for (int i = 0; i < x.length; i++) {
+      if (isOnBoard(row, col, x[i], y[i]) && moves[row+x[i]][col+y[i]] != 0) {
+        if (first) {
+          orderedMoves.add(moves[row+x[i]][col+y[i]]);
+          xnew.add(x[i]);
+          ynew.add(y[i]);
+          first = false;
+        }
+        else {
+          int index = 0;
+          while (moves[row+x[i]][col+y[i]] > orderedMoves.get(index)) {
+            index++;
+          }
+          orderedMoves.add(index, moves[row+x[i]][col+y[i]]);
+          xnew.add(index, x[i]);
+          ynew.add(index, y[i]);
+        }
+      }
+    }
   }
 
   public int countSolutions(int startingRow, int startingCol){
@@ -282,6 +244,8 @@ public class KnightBoard {
 
   public static void main(String[] args) {
     KnightBoard A = new KnightBoard(3, 5);
+    System.out.println(A.toString());
+    System.out.println(A.solve(0,0));
     System.out.println(A.toString());
   }
 
