@@ -169,7 +169,8 @@ public class KnightBoard {
         }
         else {
           int index = 0;
-          while (moves[row+x[i]][col+y[i]] > orderedMoves.get(index)) {
+          while (index < orderedMoves.size() &&
+                 moves[row+x[i]][col+y[i]] > orderedMoves.get(index)) {
             index++;
           }
           orderedMoves.add(index, moves[row+x[i]][col+y[i]]);
@@ -193,7 +194,8 @@ public class KnightBoard {
         }
         else {
           int index = 0;
-          while (moves[row+x[i]][col+y[i]] > orderedMoves.get(index)) {
+          while (index < orderedMoves.size() &&
+                 moves[row+x[i]][col+y[i]] > orderedMoves.get(index)) {
             index++;
           }
           orderedMoves.add(index, moves[row+x[i]][col+y[i]]);
