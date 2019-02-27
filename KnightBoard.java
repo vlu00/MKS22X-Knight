@@ -1,5 +1,6 @@
 public class KnightBoard {
   private int[][] board;
+  private int[][] moves;
   private int rows;
   private int cols;
 
@@ -15,8 +16,21 @@ public class KnightBoard {
         board[r][c] = 0;
       }
     }
+    moves = new int[rows][cols];
+    setUpMoves();
   }
 
+  public String toString() {
+    String display = "";
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < cols; c++) {
+        display += moves[r][c];
+      }
+      display += "\n";
+    }
+    return display;
+  }
+/*
   public String toString() {
     String display = "";
     for (int r = 0; r < rows; r++) {
@@ -40,7 +54,7 @@ public class KnightBoard {
     }
     return display;
   }
-
+*/
   public boolean isException() {
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
@@ -50,6 +64,26 @@ public class KnightBoard {
       }
     }
     return false;
+  }
+
+  private void setUpMoves() {
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < cols; c++) {
+        moves[r][c] = countMoves(r, c);
+      }
+    }
+  }
+
+  private int countMoves(int row, int col) {
+    int[] x = new int [] {-2, -2, -1, -1, 1, 1, 2, 2};
+    int[] y = new int [] {-1, 1, 2, -2, 2, -2, -1, 1};
+    int counter = 0;
+    for (int i = 0; i < x.length; i++) {
+      if (isOnBoard(row, col, x[i], y[i])) {
+        counter++;
+      }
+    }
+    return counter;
   }
 
   public boolean solve(int startingRow, int startingCol){
@@ -247,15 +281,8 @@ public class KnightBoard {
   }
 
   public static void main(String[] args) {
-    KnightBoard A = new KnightBoard(5, 5);
+    KnightBoard A = new KnightBoard(3, 5);
     System.out.println(A.toString());
-    System.out.println(A.solve(0,0));
-    System.out.println(A.toString());
-
-    KnightBoard B = new KnightBoard(5, 5);
-    System.out.println(B.countSolutions(0,0));
-    System.out.println(B.toString());
-
   }
 
 }
