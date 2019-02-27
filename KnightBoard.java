@@ -188,7 +188,7 @@ public class KnightBoard {
       if (isOnBoard(row, col, x[i], y[i]) && moves[row+x[i]][col+y[i]] != 0) {
         if (first) {
           orderedMoves.add(moves[row+x[i]][col+y[i]]);
-          newYVal.add(x[i]);
+          newYVal.add(y[i]);
           first = false;
         }
         else {
@@ -197,7 +197,7 @@ public class KnightBoard {
             index++;
           }
           orderedMoves.add(index, moves[row+x[i]][col+y[i]]);
-          newYVal.add(index, x[i]);
+          newYVal.add(index, y[i]);
         }
       }
     }
